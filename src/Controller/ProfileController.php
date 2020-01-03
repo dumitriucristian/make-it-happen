@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ProfileController extends AbstractController
 {
     /**
@@ -18,32 +19,27 @@ class ProfileController extends AbstractController
     {
 
             $user = $this->getUser();
-            $form = $this->createForm(ProfileType::class, $user);
 
+            //$wishes = $user->getWishes();
+           // dump($wishes);
+            $form = $this->createForm(ProfileType::class, $user);
+            //$repository = $this->getDoctrine()->getRepository(Wish::class);
+            //$userWish = $repository->findBy('id_user_id');
             $form->handleRequest($request);
 
+
             if ($form->isSubmitted()) {
-               $em->flush();
-        }
-
-
-
-
-        //if user does not has birthdate and username
-        //create and show personal data form
-
-
-        //if user has birtdate and username
-        //display username
-
-
-
+                $em->persist($user);
+                $em->flush();
+            }
 
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
             'form' => $form->createView()
         ]);
     }
+
+
 
 
 }

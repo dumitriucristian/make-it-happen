@@ -15,8 +15,7 @@ class ProfileType extends AbstractType
         $builder
             ->add('username')
             ->add('birthdate')
-            ->add('save', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class) ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

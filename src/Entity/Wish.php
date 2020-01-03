@@ -32,10 +32,10 @@ class Wish
     private $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="Wishes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="wishes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $id_user;
+    private $user;
 
     public function getId(): ?int
     {
@@ -78,15 +78,17 @@ class Wish
         return $this;
     }
 
-    public function getIdUser(): ?user
+    public function getUserId(): ?user
     {
-        return $this->id_user;
+        return $this->user_id;
     }
 
-    public function setIdUser(?user $id_user): self
+    public function setUser(?user $user) : self
     {
-        $this->id_user = $id_user;
+
+        $this->user = $user;
 
         return $this;
     }
+
 }

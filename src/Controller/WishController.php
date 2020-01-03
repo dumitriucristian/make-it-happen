@@ -19,7 +19,7 @@ class WishController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em)
     {
 
-        $wish = new wish();
+        $wish = new Wish();
         $form = $this->createForm(AddWishType::class, $wish);
         $user = $this->getUser();
 
@@ -28,7 +28,9 @@ class WishController extends AbstractController
 
         if ($form->isSubmitted()){
             $data = $form->getData();
-            $wish->setIdUser($user);
+            dump($data);
+            dump($user);
+            $wish->setUser($user);
             $em->persist($wish);
             $em->flush();
 

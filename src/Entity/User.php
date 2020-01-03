@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
@@ -47,8 +48,10 @@ class User implements UserInterface
      */
     private $birthdate;
 
+    // ...
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Wish", mappedBy="id_user")
+     * One user has many whishes. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="App\Entity\Wish", mappedBy="user")
      */
     private $wishes;
 
@@ -166,7 +169,7 @@ class User implements UserInterface
     {
         if (!$this->wishes->contains($wish)) {
             $this->wishes[] = $wish;
-            $wish->setIdUser($this);
+            $wish->setUserId($this);
         }
 
         return $this;
@@ -177,16 +180,12 @@ class User implements UserInterface
         if ($this->wishes->contains($wish)) {
             $this->wishes->removeElement($wish);
             // set the owning side to null (unless already changed)
-            if ($wish->getIdUser() === $this) {
-                $wish->setIdUser(null);
+            if ($wish->getUserId() === $this) {
+                $wish->setUserId(null);
             }
         }
 
         return $this;
     }
 
-    public function __toString()
-    {
-        return (string) $this->getId();
-    }
 }

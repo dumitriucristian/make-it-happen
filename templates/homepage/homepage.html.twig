@@ -1,8 +1,21 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <div class="container">
 
-        test
+    <div class="container">
+        <div class="row">
+            {% for wish in wishes %}
+
+                <div class="card col-sm-3 m-2">
+                    <img src="https://i.picsum.photos/id/486/100/100.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ wish.title }}</h5>
+                        <p class="card-text">{{ wish.shortDescription }}</p>
+                        <a href="#" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
     </div>
 
 {%  endblock %}
