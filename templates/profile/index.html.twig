@@ -7,5 +7,12 @@
 <div class="container">
 
     {{ form(form) }}
+    {%  for wish in wishes %}
+        <h2>{{ wish.title }}<span> - {{ wish.value }}</span></h2>
+        <p>{{ wish.shortDescription }}</p>
+        <a href="{{ path('edit-wish',{id: wish.id}) }}" >Edit </a>
+        <a href="{{ path('remove-wish',{id: wish.id}) }}" >Delete </a>
+        <a href="{{ path('wish') }}">Add new Wish</a>
+    {% endfor %}
 </div>
 {% endblock %}

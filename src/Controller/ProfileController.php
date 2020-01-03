@@ -20,8 +20,7 @@ class ProfileController extends AbstractController
 
             $user = $this->getUser();
 
-            //$wishes = $user->getWishes();
-           // dump($wishes);
+            $wishes = $user->getWishes();
             $form = $this->createForm(ProfileType::class, $user);
             //$repository = $this->getDoctrine()->getRepository(Wish::class);
             //$userWish = $repository->findBy('id_user_id');
@@ -35,7 +34,8 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'wishes' => $wishes
         ]);
     }
 

@@ -17,11 +17,11 @@ class HomepageController extends AbstractController
     public function index(EntityManagerInterface $em)
     {
 
-       // $repository = $this->getDoctrine()->getRepository(Wish::class);
-        //$wishes = $repository->findAll();
+       $repository = $this->getDoctrine()->getRepository(Wish::class);
+       $wishes = $repository->findAll();
 
         return $this->render('homepage/homepage.html.twig',[
-            'wishes' => []
+            'wishes' => $wishes
         ]);
     }
 

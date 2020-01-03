@@ -28,8 +28,6 @@ class WishController extends AbstractController
 
         if ($form->isSubmitted()){
             $data = $form->getData();
-            dump($data);
-            dump($user);
             $wish->setUser($user);
             $em->persist($wish);
             $em->flush();
@@ -42,4 +40,55 @@ class WishController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/edit-wish/{id}", name="edit-wish")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     */
+
+    public function edit(Request $request, EntityManagerInterface $em, $id)
+    {
+        $wish = $em->getRepository(Wish::class)->find($id);
+        $form = $this->createForm(AddWishType::class, $wish);
+        $user = $this->getUser();
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()){
+            $data = $form->getData();
+            $wish->setUser($user);
+            $em->persist($wish);
+            $em->flush();
+
+        }
+        return $this->render('wish/index.html.twig', [
+            'controller_name' => 'WishController',
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    /**
+     * @Route("/remove-wish/{id}", name="remove-wish")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     */
+
+    public function remove(Request $request, EntityManagerInterface $em, $id)
+    {
+        $wish = $em->getRepository(Wish::class)->find($id);
+        $em->remove($wish);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Wish has been deleted!'
+        );
+
+        return $this->redirectToRoute('/',[ ] );
+    }
+
+
 }
