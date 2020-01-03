@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,6 +46,16 @@ class User implements UserInterface
      * @ORM\Column(type="date", nullable=true)
      */
     private $birthdate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Wish", mappedBy="id_user")
+     */
+    private $wishes;
+
+    public function __construct()
+    {
+        $this->wishes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,5 +152,41 @@ class User implements UserInterface
         $this->birthdate = $birthdate;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Wish[]
+     */
+    public function getWishes(): Collection
+    {
+        return $this->wishes;
+    }
+
+    public function addWish(Wish $wish): self
+    {
+        if (!$this->wishes->contains($wish)) {
+            $this->wishes[] = $wish;
+            $wish->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWish(Wish $wish): self
+    {
+        if ($this->wishes->contains($wish)) {
+            $this->wishes->removeElement($wish);
+            // set the owning side to null (unless already changed)
+            if ($wish->getIdUser() === $this) {
+                $wish->setIdUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getId();
     }
 }
